@@ -44,7 +44,6 @@ function initLevel1() {
             new Bottle(-200, 330),
             new Bottle(-300, 330),
             new Bottle(-400, 330),
-            new Bottle(-500, 330),
             new Bottle(800, 330),
             new Bottle(950, 330),
             new Bottle(1900, 330),

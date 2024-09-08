@@ -16,7 +16,14 @@ class Coin extends MovableObject {
 
    coin_sound = new Audio('audio/coin.mp3');
 
-
+    /**
+     * Constructor for the `Coin` class.
+     * Initializes the coin by loading images, setting its position, and starting the animation.
+     * 
+     * @param {number} id - The unique identifier for the coin.
+     * @param {number} x - The x-coordinate for the coin's position.
+     * @param {number} y - The y-coordinate for the coin's position.
+     */
     constructor(id, x, y) {
         super().loadImage('./img/img/8_coin/coin_1.png');
         this.loadImages(this.IMAGES_COIN);
@@ -26,9 +33,13 @@ class Coin extends MovableObject {
         this.animation();
     }
 
+    /**
+     * Starts the coin's animation.
+     * Cycles through the coin's images at a set interval.
+     */
     animation() {
         setInterval(() => {
             this.playAnimation(this.IMAGES_COIN);
-        }, 300);
+        }, 300); // Update every 300 milliseconds
     }
 }

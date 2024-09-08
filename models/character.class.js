@@ -12,7 +12,6 @@ class Character extends MovableObject {
     world;
     sleep = false;
     sleepTimer = null;
-
     IMAGES_WALKING = [
         'img/img/2_character_pepe/2_walk/W-21.png',
         'img/img/2_character_pepe/2_walk/W-22.png',
@@ -75,14 +74,16 @@ class Character extends MovableObject {
         'img/img/2_character_pepe/1_idle/long_idle/I-19.png',
         'img/img/2_character_pepe/1_idle/long_idle/I-20.png'
     ];
-
     walking_sound = new Audio('audio/character_footstep2.mp3');
     jump_sound = new Audio('audio/character_jump.mp3');
     hurt_sound = new Audio('audio/character_hurt.mp3');
     dead_sound = new Audio('audio/character_dead.mp3');
     sleep_sound = new Audio('audio/character_sleep.mp3');
 
-
+    /**
+     * Constructor for the `Character` class.
+     * Initializes the character by loading images and applying gravity.
+     */
     constructor() {
         super().loadImage('./img/img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
@@ -93,121 +94,138 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_IDLE_LONG);
         this.applyGravity();
         this.animation();
-    };
+    }
 
-
+    /**
+     * Handles the animation of the character, including movement and status changes.
+     */
     animation() {
         this.characterMovements();
         this.characterStatus();
-        this.characterStatus();
-        };
-
-
-        characterMovements() {
-            let animationIntervall = setInterval(() => {
-                if (world.gameEnd == true) {
-                    clearInterval(animationIntervall);
-                };
-                this.walking_sound.pause();
-                this.characterMoveRight();
-                this.characterMoveLeft();
-                this.characterJump();
-                this.world.camera_x = -this.x + 100;
-            }, 1000 / 35);
-        };
-
-
-        characterStatus() {
-            let animationIntervall = setInterval(() => {
-                if (world.gameEnd == true) {
-                    clearInterval(animationIntervall);
-                };
-                if (this.isDeath()) {
-                    this.playAnimation(this.IMAGES_DEAD);
-                    world.gameEnd = true;
-                    world.gameLost = true;
-                    // this.dead_sound.play(); noch aktivieren
-                } else if (this.isHurt()) {
-                    this.handleHurt();
-                } else if (this.isAboveGround()) {
-                    this.playAnimation(this.IMAGES_JUMPING);
-                    this.clearSleepTimer();
-                } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                    this.playAnimation(this.IMAGES_WALKING);
-                    this.clearSleepTimer();
-                } else {
-                    this.characterSleep();
-                }
-            }, 100);
-        };
-
-
-        characterMoveRight() {
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                this.moveRight();
-                this.walking_sound.playbackRate = 3;
-                this.walking_sound.play();
-            }
-        };
-
-
-        characterMoveLeft() {
-            if (this.world.keyboard.LEFT && this.x > -400) {
-                this.moveLeft();
-                this.otherDirection = true;
-                this.walking_sound.playbackRate = 3;
-                this.walking_sound.play();
-            }
-        };
-
-
-        characterJump() {
-            if (this.world.keyboard.UP && !this.isAboveGround()) {
-                this.jump();
-                this.jump_sound.play();
-            }
-        };
-
-
-        characterSleep() {
-            if (!this.sleep) {
-                this.playAnimation(this.IMAGES_IDLE);
-                this.startSleepTimer(); // Timer für Schlafanimation starten
-            } else {
-                this.playAnimation(this.IMAGES_IDLE_LONG);
-                this.sleep_sound.play();
-            }
-        };
-
-
-        checkKeyDown() {
-            // Event-Listener für Tastendrücke hinzufügen
-            document.addEventListener('keydown', (e) => {
-                if (!e.repeat) {
-                    this.clearSleepTimer();
-                    this.sleep = false;
-                }
-            });
-        };
-
-
-        clearSleepTimer() {
-            if (this.sleepTimer) {
-                clearTimeout(this.sleepTimer);
-                this.sleepTimer = null;
-            }
-            this.sleep = false;
-            this.startSleepTimer();
-            this.sleep_sound.pause();
-        };
-
-
-        startSleepTimer() {
-            if (!this.sleepTimer) {
-                this.sleepTimer = setTimeout(() => {
-                    this.sleep = true;
-                    console.log('hallo');
-                }, 15000);
-            }
-        };
     }
+
+    /**
+     * Handles the character's movement based on keyboard input.
+     */
+    characterMovements() {
+        let animationIntervall = setInterval(() => {
+            if (world.gameEnd) {
+                clearInterval(animationIntervall);
+            }
+            this.walking_sound.pause();
+            this.characterMoveRight();
+            this.characterMoveLeft();
+            this.characterJump();
+            this.world.camera_x = -this.x + 100;
+        }, 1000 / 35);
+    }
+
+    /**
+     * Updates the character's status and triggers appropriate animations.
+     */
+    characterStatus() {
+        let animationIntervall = setInterval(() => {
+            if (world.gameEnd) {
+                clearInterval(animationIntervall);
+            }
+            if (this.isDeath()) {
+                this.playAnimation(this.IMAGES_DEAD);
+                world.gameEnd = true;
+                world.gameLost = true;
+                // this.dead_sound.play(); // Activate this when needed
+            } else if (this.isHurt()) {
+                this.handleHurt();
+            } else if (this.isAboveGround()) {
+                this.playAnimation(this.IMAGES_JUMPING);
+                this.clearSleepTimer();
+            } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                this.playAnimation(this.IMAGES_WALKING);
+                this.clearSleepTimer();
+            } else {
+                this.characterSleep();
+            }
+        }, 100);
+    }
+
+    /**
+     * Moves the character to the right if the right arrow key is pressed.
+     */
+    characterMoveRight() {
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            this.moveRight();
+            this.walking_sound.playbackRate = 3;
+            this.walking_sound.play();
+        }
+    }
+
+    /**
+     * Moves the character to the left if the left arrow key is pressed.
+     */
+    characterMoveLeft() {
+        if (this.world.keyboard.LEFT && this.x > -400) {
+            this.moveLeft();
+            this.otherDirection = true;
+            this.walking_sound.playbackRate = 3;
+            this.walking_sound.play();
+        }
+    }
+
+    /**
+     * Makes the character jump if the up arrow key is pressed.
+     */
+    characterJump() {
+        if (this.world.keyboard.UP && !this.isAboveGround()) {
+            this.jump();
+            this.jump_sound.play();
+        }
+    }
+
+    /**
+     * Handles the character's sleep animation and sound.
+     */
+    characterSleep() {
+        if (!this.sleep) {
+            this.playAnimation(this.IMAGES_IDLE);
+            this.startSleepTimer(); // Start timer for sleep animation
+        } else {
+            this.playAnimation(this.IMAGES_IDLE_LONG);
+            this.sleep_sound.play();
+        }
+    }
+
+    /**
+     * Adds an event listener to clear the sleep timer when a key is pressed.
+     */
+    checkKeyDown() {
+        document.addEventListener('keydown', (e) => {
+            if (!e.repeat) {
+                this.clearSleepTimer();
+                this.sleep = false;
+            }
+        });
+    }
+
+    /**
+     * Clears the sleep timer and resets the sleep state.
+     */
+    clearSleepTimer() {
+        if (this.sleepTimer) {
+            clearTimeout(this.sleepTimer);
+            this.sleepTimer = null;
+        }
+        this.sleep = false;
+        this.startSleepTimer();
+        this.sleep_sound.pause();
+    }
+
+    /**
+     * Starts a timer to trigger the sleep state after 15 seconds of inactivity.
+     */
+    startSleepTimer() {
+        if (!this.sleepTimer) {
+            this.sleepTimer = setTimeout(() => {
+                this.sleep = true;
+            }, 15000);
+        }
+    }
+}

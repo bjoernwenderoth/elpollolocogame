@@ -3,8 +3,8 @@ class MovableObject extends DrawableObject {
         top: 0,
         right: 0,
         bottom: 0,
-        right: 0
-    }
+        left: 0
+    };
     offsetY = 0;
     speed = 0.10;
     otherDirection = false;
@@ -16,11 +16,13 @@ class MovableObject extends DrawableObject {
     active = true;
     throwableObjects = [];
     isHurtCoolingDown = false;
-
     coin_sound = new Audio('./audio/coin.mp3');
     pickup_bottle_sound = new Audio('./audio/pickup_bottle.mp3');
 
-
+    /**
+     * Applies gravity to the object, causing it to fall unless it is on the ground.
+     * This method runs at a set interval to simulate continuous gravity.
+     */
     applyGravity() {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
@@ -30,7 +32,11 @@ class MovableObject extends DrawableObject {
         }, 1000 / 25);
     }
 
-
+    /**
+     * Determines if the object is above the ground.
+     * Special case for throwable objects, which are always considered above ground.
+     * @returns {boolean} - True if the object is above the ground, false otherwise.
+     */
     isAboveGround() {
         if (this instanceof ThrowableObject) {
             return true;
@@ -39,31 +45,44 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
+    /**
+     * Plays an animation by cycling through a series of images.
+     * @param {string[]} images - The array of image paths to cycle through.
+     */
     playAnimation(images) {
-        let i = this.currentImage % images.length; // i = 0, 1, 2, 3, 4, 5, 0, 1, ...
+        let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
     }
 
-
+    /**
+     * Moves the object to the right.
+     */
     moveRight() {
         this.x += this.speed;
         this.otherDirection = false;
     }
 
-
+    /**
+     * Moves the object to the left.
+     */
     moveLeft() {
         this.x -= this.speed;
     }
 
-
+    /**
+     * Makes the object jump by setting its vertical speed.
+     */
     jump() {
         this.speedY = 25;
     }
 
-
+    /**
+     * Checks if this object is colliding with another movable object.
+     * @param {MovableObject} mo - The other movable object to check collision with.
+     * @returns {boolean} - True if the objects are colliding, false otherwise.
+     */
     isColliding(mo) {
         return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
             this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
@@ -71,7 +90,9 @@ class MovableObject extends DrawableObject {
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
 
-
+    /**
+     * Reduces the object's energy when hit and records the time of the hit.
+     */
     hit() {
         this.energy -= 20;
         if (this.energy < 0) {
@@ -81,30 +102,44 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
+    /**
+     * Checks if the object is currently hurt (within the cooldown period after being hit).
+     * @returns {boolean} - True if the object is hurt, false otherwise.
+     */
     isHurt() {
-        let timepassed = new Date().getTime() - this.lastHit; // Differenz in ms;
-        timepassed = timepassed / 800; // Differenze in s;
+        let timepassed = new Date().getTime() - this.lastHit;
+        timepassed = timepassed / 800;
         return timepassed < 0.8;
     }
 
-
+    /**
+     * Checks if the object is dead (energy is 0).
+     * @returns {boolean} - True if the object is dead, false otherwise.
+     */
     isDeath() {
         return this.energy == 0;
     }
 
-
+    /**
+     * Increases the coin count by 1 and plays the coin pickup sound.
+     */
     pickCoin() {
         this.coin += 1;
         this.coin_sound.play();
     }
 
-
+    /**
+     * Plays the bottle pickup sound.
+     */
     pickBottle() {
         this.pickup_bottle_sound.play();
     }
 
-
+    /**
+     * Executes a function with a cooldown period to prevent rapid repeated actions.
+     * @param {Function} callback - The function to execute.
+     * @param {number} cooldownTime - The cooldown period in milliseconds.
+     */
     playFunctionWithCooldown(callback, cooldownTime) {
         if (!this.isCoolingDown) {
             callback();
@@ -115,7 +150,9 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
+    /**
+     * Handles the hurt animation and sound with a cooldown to prevent repeated triggering.
+     */
     handleHurt() {
         if (!this.isHurtCoolingDown) {
             this.playAnimation(this.IMAGES_HURT);
@@ -127,12 +164,15 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
+    /**
+     * Handles the death sequence for an enemy, including playing the death animation and sound.
+     * Repeats the animation until the game ends or the death timer expires.
+     */
     enemyIsDeath() {
         let animationIntervall = setInterval(() => {
             if (world.gameEnd == true) {
                 clearInterval(animationIntervall);
-            };
+            }
             
             if (!this.active) {
                 this.loadImage(this.IMAGE_DEAD);
@@ -151,5 +191,4 @@ class MovableObject extends DrawableObject {
             }
         }, 120);
     }
-
 }

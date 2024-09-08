@@ -260,7 +260,7 @@ p {
 #playButtons {
     position: fixed;
     width: 85%;
-    bottom: 0;
+    bottom: -16px;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -273,7 +273,7 @@ p {
     border: 2px solid #ffaf01;
     border-radius: 45px;
     background-color: lightgray;
-    padding: 16px;
+    padding: 8px;
 }
 
 .buttonsLeft,
