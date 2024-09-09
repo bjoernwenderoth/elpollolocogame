@@ -58,6 +58,17 @@ p {
     margin: 12px;
 }
 
+.impressum {
+    font-size: 16px;
+    color: black;
+    text-decoration: none;
+}
+
+.impressum:hover {
+    font-size: 18px;
+    transition: 0.3s;
+}
+
 .content {
     /* width: 100%; */
     /* max-width: 720px;

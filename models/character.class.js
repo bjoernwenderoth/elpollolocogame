@@ -132,7 +132,6 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_DEAD);
                 world.gameEnd = true;
                 world.gameLost = true;
-                // this.dead_sound.play(); // Activate this when needed
             } else if (this.isHurt()) {
                 this.handleHurt();
             } else if (this.isAboveGround()) {
@@ -186,7 +185,7 @@ class Character extends MovableObject {
     characterSleep() {
         if (!this.sleep) {
             this.playAnimation(this.IMAGES_IDLE);
-            this.startSleepTimer(); // Start timer for sleep animation
+            this.startSleepTimer();
         } else {
             this.playAnimation(this.IMAGES_IDLE_LONG);
             this.sleep_sound.play();
