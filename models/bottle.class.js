@@ -4,9 +4,9 @@ class Bottle extends MovableObject {
     height = 100;
     offset = {
         top: 15,
-        right: 30,
+        right: 40,
         bottom: 10,
-        left: 30
+        left: 40
     };
     offsetY = 0;
     IMAGES_BOTTLE = [

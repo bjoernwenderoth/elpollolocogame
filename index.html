@@ -40,10 +40,9 @@
     <div class="rotate-phone-text d-none" id="rotatePhone">
         <h1>ROTATE<br>YOUR<br>PHONE</h1>
     </div>
-
     <h1 class="headline">(El Pollo Loco)</h1>
-
     <section class="content" id="fullscreen">
+
         <div class="start-screen" id="startScreen">
             <div id="startButtons">
                 <div class="buttons cp">
@@ -51,54 +50,48 @@
                     <img onclick="playMusic()" id="iconMusic" src="img/img/icons/music_off.png" alt="">
                     <img onclick="openFullscreen()" src="img/img/icons/icon_fullscreen.png" alt="">
                 </div>
-
                 <h3 onclick="startGame()" class="startButton cp">START</h3>
             </div>
-            <div class="infobox d-none" id="infobox">
-                <div class="close-container cp">
-                    <img onclick="closeInfobox()" src="img/img/icons/close.png" alt="close">
-                </div>
-                <h4>INFO</h4>
-                <div class="key-description">
-                    <img src="img/img/icons/arrow_up.png" alt="">
-                    <p>JUMP</p>
-                </div>
-                <div class="key-description">
-                    <div class="d-flex">
-                        <img src="img/img/icons/arrow_left.png" alt="">
-                    </div>
-                    <p>MOVE LEFT</p>
-                </div>
-                <div class="key-description">
-                    <div class="d-flex">
-                        <img src="img/img/icons/arrow_right.png" alt="">
-                    </div>
-                    <p>MOVE RIGHT</p>
-                </div>
-
-                <div class="key-description">
-                    <img src="img/img/icons/space.png" alt="">
-                    <p>THROW</p>
-                </div>
-                <a href="impressum.html" class="impressum" target="_blank" rel="noopener noreferrer">IMPRESSUM</a>
-            </div>
-            
         </div>
 
+        <div class="infobox d-none" id="infobox">
+            <div class="close-container cp">
+                <img onclick="closeInfobox()" src="img/img/icons/close.png" alt="close">
+            </div>
+            <h4>INFO</h4>
+            <div class="key-description">
+                <img src="img/img/icons/arrow_up.png" alt="">
+                <p>JUMP</p>
+            </div>
+            <div class="key-description">
+                <div class="d-flex">
+                    <img src="img/img/icons/arrow_left.png" alt="">
+                </div>
+                <p>MOVE LEFT</p>
+            </div>
+            <div class="key-description">
+                <div class="d-flex">
+                    <img src="img/img/icons/arrow_right.png" alt="">
+                </div>
+                <p>MOVE RIGHT</p>
+            </div>
+            <div class="key-description">
+                <img src="img/img/icons/space.png" alt="">
+                <p>THROW</p>
+            </div>
+            <a href="impressum.html" class="impressum" target="_blank" rel="noopener noreferrer">IMPRESSUM</a>
+        </div>
         <div id="playButtons" class="d-none">
             <div class="buttonsLeft">
                 <img src="img/img/icons/arrow_left.png" id="btnLeft" alt="left">
                 <img src="img/img/icons/arrow_right.png" id="btnRight" alt="right">
             </div>
-
             <div class="buttonsRight">
                 <img src="img/img/icons/arrow_up.png" id="btnUp" alt="jump">
                 <img src="img/img/icons/space.png" id="btnSpace" alt="throw">
             </div>
-
         </div>
-
-        <div class="end-screen" id="endScreen">
+        <div class="end-screen d-none" id="endScreen">
             <!-- WIN SCREEN -->
             <div id="collectedCoins"></div>
             <img src="img/img/9_intro_outro_screens/win/youwin_new.png" class="d-none" alt="youWin" id="youWin">
@@ -113,9 +106,14 @@
                 <h3 onclick="goToHome()" class="cp">HOME</h3>
                 <h3 onclick="startGame()" class="cp">RESTART</h3>
             </div>
-
         </div>
-
+        <div id="buttonsSettings" class="buttonsSettings d-none">
+            <div class="buttons-in-game cp">
+                <img onclick="openInfobox()" src="img/img/icons/icon_info.png" alt="">
+                <img onclick="playMusicInGame()" id="iconMusicInGame" src="img/img/icons/music_off.png" alt="">
+                <img onclick="openFullscreen()" src="img/img/icons/icon_fullscreen.png" alt="">
+            </div>
+        </div>
 
         <canvas id="canvas" width="720" height="480"></canvas>
     </section>

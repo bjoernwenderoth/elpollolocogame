@@ -125,14 +125,18 @@ class MovableObject extends DrawableObject {
      */
     pickCoin() {
         this.coin += 1;
-        this.coin_sound.play();
+        if (soundOn) {
+            this.coin_sound.play();
+        }
     }
 
     /**
      * Plays the bottle pickup sound.
      */
     pickBottle() {
-        this.pickup_bottle_sound.play();
+        if (soundOn) {
+            this.pickup_bottle_sound.play();
+        }
     }
 
     /**
@@ -156,7 +160,9 @@ class MovableObject extends DrawableObject {
     handleHurt() {
         if (!this.isHurtCoolingDown) {
             this.playAnimation(this.IMAGES_HURT);
-            this.hurt_sound.play();
+            if (soundOn) {
+                this.hurt_sound.play();
+            }
             this.isHurtCoolingDown = true;
             setTimeout(() => {
                 this.isHurtCoolingDown = false; 
@@ -182,7 +188,7 @@ class MovableObject extends DrawableObject {
                         this.deathTimer = null;
                     }, 5000);
                 }
-                if (!this.soundPlayed) {
+                if (!this.soundPlayed && soundOn) {
                     this.dead_sound.play();
                     this.soundPlayed = true;
                 }

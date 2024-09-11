@@ -4,9 +4,9 @@ class Endboss extends MovableObject {
     height = 400;
     offset = {
         top: 50,
-        right: 20,
+        right: 30,
         bottom: 20,
-        left: 20
+        left: 30
     }
     offsetY = 0;
     y = 40;
@@ -78,7 +78,7 @@ class Endboss extends MovableObject {
             if (!spawningFinished && this.hadFirstContact) {
                 if (i < this.IMAGES_SPAWNING.length * 3) {
                     this.playAnimation(this.IMAGES_SPAWNING);
-                    if (i === 0) {
+                    if (i === 0 && soundOn) {
                         this.endboss_join_sound.play();
                     }
                     i++;

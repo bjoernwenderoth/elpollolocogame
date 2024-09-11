@@ -1,11 +1,12 @@
 class Character extends MovableObject {
     width = 115;
     height = 230;
+    y = 200;
     offset = {
         top: 100,
-        right: 15,
+        right: 20,
         bottom: 0,
-        left: 15
+        left: 20
     };
     offsetY = 0;
     speed = 10;
@@ -132,6 +133,7 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_DEAD);
                 world.gameEnd = true;
                 world.gameLost = true;
+                document.getElementById('endScreen').classList.remove('d-none');
             } else if (this.isHurt()) {
                 this.handleHurt();
             } else if (this.isAboveGround()) {
@@ -152,8 +154,10 @@ class Character extends MovableObject {
     characterMoveRight() {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
             this.moveRight();
-            this.walking_sound.playbackRate = 3;
-            this.walking_sound.play();
+            if (soundOn) {
+                this.walking_sound.playbackRate = 3;
+                this.walking_sound.play();
+            }
         }
     }
 
@@ -164,8 +168,10 @@ class Character extends MovableObject {
         if (this.world.keyboard.LEFT && this.x > -400) {
             this.moveLeft();
             this.otherDirection = true;
-            this.walking_sound.playbackRate = 3;
-            this.walking_sound.play();
+            if (soundOn) {
+                this.walking_sound.playbackRate = 3;
+                this.walking_sound.play();
+            }
         }
     }
 
@@ -175,7 +181,9 @@ class Character extends MovableObject {
     characterJump() {
         if (this.world.keyboard.UP && !this.isAboveGround()) {
             this.jump();
-            this.jump_sound.play();
+            if (soundOn) {
+                this.jump_sound.play();
+            }
         }
     }
 
@@ -188,7 +196,9 @@ class Character extends MovableObject {
             this.startSleepTimer();
         } else {
             this.playAnimation(this.IMAGES_IDLE_LONG);
-            this.sleep_sound.play();
+            if (soundOn) {
+                this.sleep_sound.play();
+            }
         }
     }
 

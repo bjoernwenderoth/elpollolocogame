@@ -100,10 +100,9 @@ class World {
      */
     enemyIsDeath(enemy, index) {
         if (index !== 0 && enemy.active) {
-            if (this.character.isColliding(enemy) && this.character.isAboveGround()) {
+            if (this.character.isColliding(enemy) && this.character.isAboveGround() && this.character.speedY < 0) {
                 enemy.isDeath();
                 enemy.active = false;
-                this.character.jump();
                 this.removeDeadEnemy(enemy);
             }
         }
@@ -232,6 +231,7 @@ class World {
         if (endboss.energy === 0) {
             endboss.active = false;
             endboss.isDeath();
+            document.getElementById('endScreen').classList.remove('d-none');
         }
     }
 

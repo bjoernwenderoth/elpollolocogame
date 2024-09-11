@@ -38,7 +38,7 @@ class ThrowableObject extends MovableObject {
         this.loadImages(this.IMAGES_BOTTLE_SPLASH);
         this.x = x;
         this.y = y;
-        this.throw(); // Initiates the throw action
+        this.throw();
     }
 
     /**
@@ -46,17 +46,19 @@ class ThrowableObject extends MovableObject {
      * and starting the rotation animation.
      */
     throw() {
-        this.speedY = 20; // Initial vertical speed
-        this.applyGravity(); // Apply gravity to the object
-        this.otherDirection = world.character.otherDirection; // Determine the direction based on the character's direction
+        this.speedY = 20; 
+        this.applyGravity(); 
+        this.otherDirection = world.character.otherDirection; 
         this.movingAnimations = setInterval(() => {
             if (this.active) {
-                this.throwDirection(); // Update direction if the object is still in the air
+                this.throwDirection();
             } else {
-                this.playAnimation(this.IMAGES_BOTTLE_SPLASH); // Play splash animation when it hits something
+                this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
             }
         }, 25);
-        this.throw_sound.play(); // Play throwing sound
+        if (soundOn) {
+            this.throw_sound.play(); 
+        }
     }
 
     /**
@@ -69,7 +71,7 @@ class ThrowableObject extends MovableObject {
         } else {
             this.throwRight();
         }
-        this.playAnimation(this.IMAGES_ROTATE); // Play the rotation animation during the throw
+        this.playAnimation(this.IMAGES_ROTATE); 
     }
 
     /**
@@ -91,8 +93,10 @@ class ThrowableObject extends MovableObject {
      * Deactivates the object and plays the splash sound effect.
      */
     splash() {
-        this.active = false; // Deactivate the object (stops movement and triggers splash animation)
-        this.bottle_damage_sound.volume = 1;
-        this.bottle_damage_sound.play(); // Play the bottle splash sound effect
+        this.active = false;
+        if (soundOn) {
+            this.bottle_damage_sound.volume = 1;
+            this.bottle_damage_sound.play(); // Play the bottle splash sound effect
+        }
     }
 }

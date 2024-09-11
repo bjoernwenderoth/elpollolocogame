@@ -3,32 +3,61 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let bgMusic = new Audio('audio/moonlight_in_mexico.mp3');
-let fullscreen = false; 
+let fullscreen = false;
 let rotate;
+let soundOn = false;
+let gameStart = false;
 
 /**
  * Initializes the game environment by checking orientation, setting up keyboard, and touch input.
  */
 function init() {
+    window.addEventListener("orientationchange", checkOrientation);
     checkOrientation();
+    checkOrientationTablet();
     keyboardFunction();
     touchFunction();
 }
 
 /**
- * Handles screen orientation changes and updates the UI accordingly.
+ * Handles screen orientation using `window.orientation`.
+ * Updates UI based on portrait (0 or 180) or landscape (90 or -90) mode.
+ * Shows or hides elements like "rotatePhone" and "playButtons" accordingly.
  */
 function checkOrientation() {
-    window.addEventListener("orientationchange", checkOrientation);
-    if (window.orientation === 0 || window.orientation === 180) {
+    const orientation = window.orientation;
+    if (orientation === 0 || orientation === 180) {
         rotate = false;
         document.getElementById('rotatePhone').classList.remove('d-none');
         document.getElementById('playButtons').classList.add('d-none');
-    } else if (window.orientation === 90 || window.orientation === -90) {
+    } else if (orientation === 90 || orientation === -90 && gameStart) {
         rotate = true;
         document.getElementById('rotatePhone').classList.add('d-none');
     }
 }
+
+
+/**
+ * Handles orientation changes using `window.matchMedia`.
+ * Listens for portrait mode and updates the UI by showing or hiding "rotatePhone" and "playButtons".
+ */
+function checkOrientationTablet() {
+    window.matchMedia("(orientation: portrait)").addEventListener("change", e => {
+        const portrait = e.matches;
+        if (portrait) {
+            rotate = false;
+            document.getElementById('rotatePhone').classList.remove('d-none');
+            document.getElementById('playButtons').classList.add('d-none');
+        } else {
+            rotate = true;
+            document.getElementById('rotatePhone').classList.add('d-none');
+            if (gameStart == true) {
+                document.getElementById('playButtons').classList.remove('d-none');
+            }
+        }
+    });
+}
+
 
 /**
  * Starts the game by initializing level 1, setting up the game canvas and world, 
@@ -38,6 +67,7 @@ function startGame() {
     initLevel1();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
+    gameStart = true;
     setTimeout(() => {
         removeContainer();
     }, 500);
@@ -48,6 +78,8 @@ function startGame() {
  */
 function removeContainer() {
     document.getElementById('startScreen').classList.add('d-none');
+    document.getElementById('buttonsSettings').classList.remove('d-none');
+    document.getElementById('endScreen').classList.add('d-none');
     document.getElementById('youWin').classList.add('d-none');
     document.getElementById('startButtons').classList.add('d-none');
     document.getElementById('gameOver').classList.add('d-none');
@@ -64,6 +96,7 @@ function removeContainer() {
 function goToHome() {
     document.getElementById('startScreen').classList.remove('d-none');
     document.getElementById('startButtons').classList.remove('d-none');
+    document.getElementById('endScreen').classList.add('d-none');
 }
 
 /**
@@ -74,14 +107,34 @@ function playMusic() {
     let musicOnPath = 'img/img/icons/music_on.png';
     let imgElement = document.getElementById('iconMusic');
     if (imgElement.src.includes(musicOffPath)) {
+        soundOn = true;
         imgElement.src = musicOnPath;
-        bgMusic.volume = 0.5;
+        bgMusic.volume = 0.2;
         bgMusic.play();
     } else {
         imgElement.src = musicOffPath;
         bgMusic.pause();
+        soundOn = false;
     }
 }
+
+function playMusicInGame() {
+    let musicOffPath = 'img/img/icons/music_off.png';
+    let musicOnPath = 'img/img/icons/music_on.png';
+    let imgElement = document.getElementById('iconMusicInGame');
+    if (imgElement.src.includes(musicOffPath)) {
+        soundOn = true;
+        imgElement.src = musicOnPath;
+        bgMusic.volume = 0.2;
+        bgMusic.play();
+    } else {
+        imgElement.src = musicOffPath;
+        bgMusic.pause();
+        soundOn = false;
+    }
+}
+
+
 
 // ---------- FULLSCREEN HANDLING ---------- //
 

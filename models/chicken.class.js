@@ -1,5 +1,5 @@
 class Chicken extends MovableObject {
-    y = 338;
+    y = 345;
     height = 80;
     width = 80;
     IMAGES_WALKING = [
@@ -10,9 +10,9 @@ class Chicken extends MovableObject {
     IMAGE_DEAD = 'img/img/3_enemies_chicken/chicken_normal/2_dead/dead.png';
     offset = {
         top: 0,
-        right: 0,
+        right: 20,
         bottom: 0,
-        left: 0
+        left: 20
     };
     offsetY = 0;
     dead_sound = new Audio('./audio/chicken_dead.mp3');
